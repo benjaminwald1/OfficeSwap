@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import {
+  Image,
   SafeAreaView,
   View,
   Text,
@@ -11,11 +12,59 @@ import {
 } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 
-// Client access codes: 6 characters, mix of letters and numbers.
-// Add one entry per client organization.
+// Personal access codes: 6 characters, mix of letters and numbers.
+// One entry per participant in the NYC office swap.
 const ACCESS_CODES = {
-  JPM4K9: 'JP Morgan',
+  HBTRQJ: 'John Richert',
+  GF5CBF: 'Joe DeBarbrie',
+  PQBN4Q: 'Jack LaGere',
+  '6TAL5X': 'Brian Pehoski',
+  TKPXGF: 'Bob Berkus',
+  '2GYYSC': 'Dave Khalsa',
+  '7H2FUZ': 'Barry Lutz',
+  NECQUF: 'Matt Wedge',
+  QG2T7Z: 'Cameron Morris',
+  LZYPTE: 'Christopher Dass',
+  LRL72T: 'Corey Ryan',
+  QWDQCW: 'Chris Backscheider',
+  '3TEPWP': 'Craig Rosoff',
+  '937KSJ': 'Mark Breeden',
+  RS53ZQ: 'Ian Radomski',
+  J9FDHK: 'Humberto Garcia-Salas',
+  L5E227: 'Andrew Redmond',
+  SAHTXH: 'Trey Hanlan',
+  U5L7AS: 'Fei-Fei Zhang',
+  MGVNKZ: 'Andrew Sinclair',
+  LAW9BH: 'Carl Torrillo',
+  ZVRDRF: 'Ryan Lake',
+  F9EJJ8: 'Rohan Juneja',
+  LS5PNV: 'Max Barrett',
+  '3Z66HR': 'Nick Melton',
+  QEXBQQ: 'Miles Perkins',
+  AEDQEC: 'Dan Rufo',
+  XERT9P: 'Casey Chopek',
+  J8R84N: 'Olga Polunina',
+  GG5Y54: 'Rohit Bhandari',
+  '7DGD3X': 'Ward Jones',
+  GRNN6J: 'Joe Lace',
+  '5MT7RE': 'Brandon Speck',
+  '6GDAFR': 'JC Raby',
+  L498P3: 'Douglas Melsheimer',
+  DL2A2S: 'Mike Amez',
+  '7U59KN': 'Rodney Miller',
+  UPDDWD: 'Andrew Castaldo',
+  D8LDFM: 'Andrew Martin',
+  EER3HR: 'Jeremy Berntsen',
+  CF4WSP: 'Robert S Daugherty',
+  WRS3JV: 'Jay Harris',
+  '7WEA7G': 'Steve Lanese',
+  EPSJYE: 'Firdaus Pohowalla',
+  RZUL6V: 'Rob Rosenfeld',
+  AVGJSH: 'Joe Warshawsky',
+  GKTUPX: 'Leo Reilly',
 };
+
+const LOGO = require('./assets/icon.png');
 
 function AccessGate({ onUnlock }) {
   const [code, setCode] = useState('');
@@ -23,9 +72,9 @@ function AccessGate({ onUnlock }) {
 
   const submit = () => {
     const normalized = code.trim().toUpperCase();
-    const org = ACCESS_CODES[normalized];
-    if (org) {
-      onUnlock(org);
+    const name = ACCESS_CODES[normalized];
+    if (name) {
+      onUnlock(name);
     } else {
       setError(true);
     }
@@ -33,11 +82,12 @@ function AccessGate({ onUnlock }) {
 
   return (
     <SafeAreaView style={styles.container}>
-      <StatusBar style="dark" />
+      <StatusBar style="light" />
       <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'padding' : undefined}
         style={styles.content}
       >
+        <Image source={LOGO} style={styles.logo} />
         <Text style={styles.title}>OfficeSwap</Text>
         <Text style={styles.subtitle}>Enter your access code</Text>
 
@@ -72,17 +122,18 @@ function AccessGate({ onUnlock }) {
 }
 
 export default function App() {
-  const [org, setOrg] = useState(null);
+  const [name, setName] = useState(null);
 
-  if (!org) {
-    return <AccessGate onUnlock={setOrg} />;
+  if (!name) {
+    return <AccessGate onUnlock={setName} />;
   }
 
   return (
     <SafeAreaView style={styles.container}>
-      <StatusBar style="dark" />
+      <StatusBar style="light" />
       <View style={styles.content}>
-        <Text style={styles.title}>Welcome, {org}</Text>
+        <Image source={LOGO} style={styles.logoSmall} />
+        <Text style={styles.title}>Welcome, {name}</Text>
         <Text style={styles.subtitle}>OfficeSwap is unlocked.</Text>
       </View>
     </SafeAreaView>
@@ -92,7 +143,7 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: '#0B1420',
   },
   content: {
     flex: 1,
@@ -100,50 +151,63 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     paddingHorizontal: 32,
   },
+  logo: {
+    width: 128,
+    height: 128,
+    borderRadius: 28,
+    marginBottom: 20,
+  },
+  logoSmall: {
+    width: 88,
+    height: 88,
+    borderRadius: 20,
+    marginBottom: 20,
+  },
   title: {
     fontSize: 28,
     fontWeight: '700',
-    color: '#111827',
+    color: '#F5F7FA',
     marginBottom: 8,
+    textAlign: 'center',
   },
   subtitle: {
     fontSize: 16,
-    color: '#6B7280',
+    color: '#9AA6B8',
     marginBottom: 32,
   },
   input: {
     width: 220,
     height: 56,
     borderWidth: 2,
-    borderColor: '#D1D5DB',
+    borderColor: '#2A3B52',
     borderRadius: 12,
     fontSize: 24,
     letterSpacing: 6,
     fontWeight: '600',
-    color: '#111827',
+    color: '#F5F7FA',
     marginBottom: 12,
   },
   inputError: {
     borderColor: '#DC2626',
   },
   errorText: {
-    color: '#DC2626',
+    color: '#F87171',
     fontSize: 14,
     marginBottom: 16,
   },
   button: {
     marginTop: 12,
-    backgroundColor: '#111827',
+    backgroundColor: '#F2A93B',
     paddingVertical: 14,
     paddingHorizontal: 48,
     borderRadius: 12,
   },
   buttonDisabled: {
-    backgroundColor: '#9CA3AF',
+    backgroundColor: '#4B5563',
   },
   buttonText: {
-    color: '#FFFFFF',
+    color: '#0B1420',
     fontSize: 16,
-    fontWeight: '600',
+    fontWeight: '700',
   },
 });
